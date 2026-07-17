@@ -1,28 +1,18 @@
 class Solution {
 public:
-    int evalRPN(vector<string>& tokens) {
-        stack<int> stack;
-        for (const string& c : tokens) {
-            if (c == "+") {
-                int a = stack.top(); stack.pop();
-                int b = stack.top(); stack.pop();
-                stack.push(b + a);
-            } else if (c == "-") {
-                int a = stack.top(); stack.pop();
-                int b = stack.top(); stack.pop();
-                stack.push(b - a);
-            } else if (c == "*") {
-                int a = stack.top(); stack.pop();
-                int b = stack.top(); stack.pop();
-                stack.push(b * a);
-            } else if (c == "/") {
-                int a = stack.top(); stack.pop();
-                int b = stack.top(); stack.pop();
-                stack.push(b / a);
-            } else {
-                stack.push(stoi(c));
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        vector<int> res(temperatures.size(), 0);
+        stack<pair<int, int>> stack; // pair: {temp, index}
+
+        for (int i = 0; i < temperatures.size(); i++) {
+            int t = temperatures[i];
+            while (!stack.empty() && t > stack.top().first) {
+                auto pair = stack.top();
+                stack.pop();
+                res[pair.second] = i - pair.second;
             }
+            stack.push({t, i});
         }
-        return stack.top();
+        return res;
     }
 };
